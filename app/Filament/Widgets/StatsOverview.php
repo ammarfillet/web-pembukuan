@@ -16,19 +16,19 @@ class StatsOverview extends BaseWidget
     {
         $startDate = ! is_null($this->filters['startDate'] ?? null) ?
             Carbon::parse($this->filters['startDate']) :
-            null;
+            now();
 
         $endDate = ! is_null($this->filters['endDate'] ?? null) ?
             Carbon::parse($this->filters['endDate']) :
             now();
 
         $pemasukan = Transaction::incomes()
-                        ->whereBetween('date_Transaction', [$startDate, $endDate])
-                        ->sum('amount');
+            ->whereBetween('date_Transaction', [$startDate, $endDate])
+            ->sum('amount');
 
         $pengeluaran = Transaction::expenses()
-                        ->whereBetween('date_Transaction', [$startDate, $endDate])
-                        ->sum('amount');
+            ->whereBetween('date_Transaction', [$startDate, $endDate])
+            ->sum('amount');
 
         return [
             Stat::make('Total Pemasukan', $pemasukan),

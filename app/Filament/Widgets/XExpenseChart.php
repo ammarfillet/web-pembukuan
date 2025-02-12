@@ -20,12 +20,12 @@ class XExpenseChart extends ChartWidget
     {
         $startDate = ! is_null($this->filters['startDate'] ?? null) ?
             Carbon::parse($this->filters['startDate']) :
-            null;
+            now();
 
         $endDate = ! is_null($this->filters['endDate'] ?? null) ?
             Carbon::parse($this->filters['endDate']) :
             now();
-        
+
         $data = Trend::query(Transaction::expenses())
             ->between(
                 start: $startDate,
@@ -38,10 +38,10 @@ class XExpenseChart extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Pemasukan per Hari',
-                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
+                    'data' => $data->map(fn(TrendValue $value) => $value->aggregate),
                 ],
             ],
-            'labels' => $data->map(fn (TrendValue $value) => $value->date),
+            'labels' => $data->map(fn(TrendValue $value) => $value->date),
         ];
     }
 
